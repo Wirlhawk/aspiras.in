@@ -1,10 +1,11 @@
 import Navbar from "@/components/layout/navbar/navbar";
 import "./globals.css";
-import { Archivo_Black, Space_Grotesk } from "next/font/google";
+import localFont from "next/font/local";
+import { Space_Grotesk } from "next/font/google";
+import { Toaster } from "@/components/retroui/Sonner";
 
-const archivoBlack = Archivo_Black({
-  subsets: ["latin"],
-  weight: "400",
+const neueMachina = localFont({
+  src: "../public/fonts/NeueMachina-Ultrabold.otf",
   variable: "--font-head",
   display: "swap",
 });
@@ -23,10 +24,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${archivoBlack.variable} ${space.variable}`}>
+      <body className={`${neueMachina.variable} ${space.variable} flex flex-col min-h-screen bg-secondary/10`}>
         <Navbar />
-        {children}
+        <div className="max-w-7xl w-full pt-20 h-screen mx-auto ">
+          {children}
+        </div>
+        <Toaster />
       </body>
     </html>
   );
 }
+

@@ -1,15 +1,18 @@
+"use client"
 import { Button } from "@/components/retroui/Button";
-import { db } from "@/lib/db";
-import { aspirationCategories } from "@/lib/db/schema";
+import { toast } from "sonner";
 
-export default async function Home() {
-  const categories = await db.query.schoolClasses.findMany();
+export default function Home() {
+
+
+  const onClick = () => {
+    toast.success("Congrats man 🎉 (Plain)");
+  };
+
   return (
-    <div className="p-3">
-      {categories.map((category) => (
-        <div key={category.id}>{category.name}</div>
-      ))}
-      <Button variant="default">B shadcneraq</Button>
+    <div className="flex min-h-screen flex-col items-center justify-between p-24">
+      <Button onClick={onClick}>Congratulate Me</Button>;
+
     </div>
   );
 }

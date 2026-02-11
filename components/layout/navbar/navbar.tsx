@@ -1,26 +1,43 @@
 import { Button } from '@/components/retroui/Button'
-import React from 'react'
+import { getSessionWithProfile } from '@/server/user/user.query'
+import Link from 'next/link'
 
-const Navbar = () => {
+const Navbar = async () => {
+    const data = await getSessionWithProfile()
+    const session = data?.session
+
     return (
-        <header className="border-b-2  px-4 md:px-6">
-            <div className="container mx-auto flex h-16 items-center justify-between max-w-7xl">
+        <header className="border-b-4  fixed top-0 w-full bg-card z-20">
+            <div className="container mx-auto flex h-20 items-center justify-between max-w-7xl px-4 md:px-6">
                 <div className="flex items-center gap-2">
-                    <span className="text-2xl font-head" >Aspiras.in</span>
+                    <span className="text-2xl font-head" >Aspirasi<span className='text-primary'>.in</span></span>
                 </div>
-```tsx
-                <nav className="hidden md:flex items-center gap-6">
-                    <a href="#" className="text-sm font-medium hover:underline underline-offset-4 decoration-2 decoration-primary transition-all">Home</a>
-                    <a href="#" className="text-sm font-medium hover:underline underline-offset-4 decoration-2 decoration-primary transition-all">About</a>
-                    <a href="#" className="text-sm font-medium hover:underline underline-offset-4 decoration-2 decoration-primary transition-all">Services</a>
-                    <a href="#" className="text-sm font-medium hover:underline underline-offset-4 decoration-2 decoration-primary transition-all">Contact</a>
+
+                <nav className="hidden md:flex items-center gap-6 font-sans font-semibold transition-colors">
+                    <Link href="/home" className="text-lg underline-offset-4 decoration-2 decoration-primary transition-all hover:text-primary">HOME</Link>
+                    <Link href="/aspirasi" className="text-lg underline-offset-4 decoration-2 decoration-primary transition-all hover:text-primary">ASPIRASI</Link>
                 </nav>
-```
-                <div className="flex items-center gap-2">
-                    <Button variant="outline" size="sm">Login</Button>
-                    <Button size="sm">Sign Up</Button>
-                </div>
+
+                {
+                    session ? (
+                        <div className="flex items-center gap-2">
+                            <Button asChild>
+                                <Link href="/logout">Sign Out</Link>
+                            </Button>
+                        </div>
+                    ) : (
+                        <div className="flex items-center gap-2">
+                            <Button asChild>
+                                <Link href="/login">Sign In</Link>
+                            </Button>
+                        </div>
+                    )
+                }
             </div>
+            {/* 
+            <div className='container mx-auto flex h-72'>
+
+            </div> */}
         </header>
     )
 }
