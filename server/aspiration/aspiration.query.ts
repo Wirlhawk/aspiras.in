@@ -1,13 +1,36 @@
-
 import { db } from "@/lib/db"
-import { aspirationCategories, aspirations } from "@/lib/db/schema"
 import { requireAuth } from '@/server/utils/require-auth'
-import { desc, eq } from "drizzle-orm"
 
 export const getCurrentUserAspirations = async () => {
     const { profile } = await requireAuth()
 
-    console.log("profile", profile)
+    return await db.aspiration.findMany({
+        where: { profileId: profile!.id },
+        include: { category: true },
+        orderBy: { createdAt: 'desc' },
+    })
+}
 
-    return await db.select().from(aspirations).where(eq(aspirations.profileId, profile.id)).orderBy(desc(aspirations.createdAt)).innerJoin(aspirationCategories, eq(aspirations.categoryId, aspirationCategories.id))
+export const getAspirationById = async (id: string) => {
+    return await db.aspiration.findUnique({
+        where: { id },
+        include: {
+            category: true,
+            profile: {
+                include: { class: true },
+            },
+            comments: {
+                include: {
+                    profile: true,
+                },
+                orderBy: { createdAt: 'desc' },
+            },
+            responses: {
+                include: {
+                    profile: true,
+                },
+                orderBy: { createdAt: 'desc' },
+            },
+        },
+    })
 }

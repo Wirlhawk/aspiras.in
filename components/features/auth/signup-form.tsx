@@ -11,7 +11,7 @@ import { signUpSchema } from "@/schema/user.schema"
 import { Select } from "@/components/retroui/Select"
 
 
-import { SchoolClass } from "@/lib/db/schema"
+import type { SchoolClass } from "@/lib/generated/prisma/client"
 
 export function SignUpForm({ classes }: { classes: SchoolClass[] }) {
     const form = useForm<z.infer<typeof signUpSchema>>({

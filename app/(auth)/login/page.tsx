@@ -5,7 +5,7 @@ import React from 'react'
 
 const LoginPage = () => {
     return (
-        <div className='w-full grid place-items-center p-4 h-full'>
+        <div className='w-full grid place-items-center p-4 h-screen'>
             <AuthCard title="Sign In" description="Enter your email to receive a magic link for instant access.">
                 <LoginForm />
                 <AuthFooter label="Don't have an account?" linkText="Sign up" href="/register" />

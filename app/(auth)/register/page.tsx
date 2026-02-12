@@ -1,7 +1,7 @@
 import AuthCard from '@/components/features/auth/auth-card'
 import AuthFooter from '@/components/features/auth/auth-footer'
 import { SignUpForm } from "@/components/features/auth/signup-form"
-import { getAllClasses } from "@/server/classes/classes.query"
+import { getAllClasses } from "@/server/class/class.query"
 import React from 'react'
 
 const RegisterPage = async () => {

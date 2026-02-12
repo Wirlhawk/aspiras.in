@@ -1,0 +1,170 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ========================
+// ENUMS
+// ========================
+
+enum UserRole {
+  STUDENT
+  ADMIN
+
+  @@map("user_role")
+}
+
+enum AspirationStatus {
+  PENDING
+  PROCESSING
+  DONE
+  REJECTED
+
+  @@map("aspiration_status")
+}
+
+// ========================
+// MODELS
+// ========================
+
+model Profile {
+  id        String    @id @db.Uuid
+  name      String
+  role      UserRole  @default(STUDENT)
+  classId   String    @map("class_id") @db.Uuid
+  createdAt DateTime? @default(now()) @map("created_at")
+
+  // Relations
+  class              SchoolClass         @relation(fields: [classId], references: [id])
+  aspirations        Aspiration[]
+  aspirationComments AspirationComment[]
+  adminResponses     AdminResponse[]
+  aspirationReports  AspirationReport[]
+
+  @@map("profiles")
+}
+
+model SchoolClass {
+  id    String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name  String
+  grade String
+
+  // Relations
+  profiles Profile[]
+
+  @@map("school_classes")
+}
+
+model AspirationCategory {
+  id   String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name String
+  slug String
+
+  // Relations
+  aspirations Aspiration[]
+
+  @@map("aspiration_categories")
+}
+
+model Aspiration {
+  id          String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  content     String
+  image       String?
+  categoryId  String           @map("category_id") @db.Uuid
+  profileId   String           @map("profile_id") @db.Uuid
+  status      AspirationStatus @default(PENDING)
+  isAnonymous Boolean          @default(false) @map("is_anonymous")
+  createdAt   DateTime?        @default(now()) @map("created_at")
+  updatedAt   DateTime?        @default(now()) @map("updated_at")
+
+  // Relations
+  category  AspirationCategory  @relation(fields: [categoryId], references: [id])
+  profile   Profile             @relation(fields: [profileId], references: [id])
+  comments  AspirationComment[]
+  responses AdminResponse[]
+  reports   AspirationReport[]
+  flags     AspirationFlag[]
+
+  @@map("aspirations")
+}
+
+// model AspirationLike {
+//   id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+//   profileId    String    @map("profile_id") @db.Uuid
+//   aspirationId String    @map("aspiration_id") @db.Uuid
+//   createdAt    DateTime? @default(now()) @map("created_at")
+
+//   // Relations
+//   profile    Profile    @relation(fields: [profileId], references: [id])
+//   aspiration Aspiration @relation(fields: [aspirationId], references: [id])
+
+//   @@unique([profileId, aspirationId], name: "aspiration_like_unique")
+//   @@map("aspiration_likes")
+// }
+
+model AspirationComment {
+  id              String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  content         String
+  profileId       String    @map("profile_id") @db.Uuid
+  aspirationId    String    @map("aspiration_id") @db.Uuid
+  isAnonymous     Boolean?  @default(false) @map("is_anonymous")
+  parentCommentId String?   @map("parent_comment_id") @db.Uuid
+  createdAt       DateTime? @default(now()) @map("created_at")
+
+  // Relations
+  profile       Profile             @relation(fields: [profileId], references: [id])
+  aspiration    Aspiration          @relation(fields: [aspirationId], references: [id])
+  parentComment AspirationComment?  @relation("CommentReplies", fields: [parentCommentId], references: [id])
+  replies       AspirationComment[] @relation("CommentReplies")
+
+  @@map("aspiration_comments")
+}
+
+model AdminResponse {
+  id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  content      String
+  aspirationId String    @map("aspiration_id") @db.Uuid
+  profileId    String    @map("profile_id") @db.Uuid
+  isPinned     Boolean?  @default(false) @map("is_pinned")
+  createdAt    DateTime? @default(now()) @map("created_at")
+
+  // Relations
+  aspiration Aspiration @relation(fields: [aspirationId], references: [id])
+  profile    Profile    @relation(fields: [profileId], references: [id])
+
+  @@map("admin_responses")
+}
+
+model AspirationReport {
+  id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  reason       String
+  aspirationId String    @map("aspiration_id") @db.Uuid
+  profileId    String    @map("profile_id") @db.Uuid
+  createdAt    DateTime? @default(now()) @map("created_at")
+
+  // Relations
+  aspiration Aspiration @relation(fields: [aspirationId], references: [id])
+  profile    Profile    @relation(fields: [profileId], references: [id])
+
+  @@map("aspiration_reports")
+}
+
+model AspirationFlag {
+  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  aspirationId  String    @map("aspiration_id") @db.Uuid
+  spamScore     String?   @map("spam_score")
+  toxicityScore String?   @map("toxicity_score")
+  qualityScore  String?   @map("quality_score")
+  isFlagged     Boolean?  @default(false) @map("is_flagged")
+  flaggedReason String?   @map("flagged_reason")
+  createdAt     DateTime? @default(now()) @map("created_at")
+
+  // Relations
+  aspiration Aspiration @relation(fields: [aspirationId], references: [id])
+
+  @@map("aspiration_flags")
+}

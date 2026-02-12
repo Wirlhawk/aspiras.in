@@ -26,7 +26,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${neueMachina.variable} ${space.variable} flex flex-col min-h-screen bg-secondary/10`}>
         <Navbar />
-        <div className="max-w-7xl w-full pt-20 h-screen mx-auto ">
+        <div className="max-w-7xl w-full min-h-screen mx-auto ">
           {children}
         </div>
         <Toaster />

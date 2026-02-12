@@ -4,9 +4,7 @@ import { createServerClient } from "@/lib/supabase/server";
 import { actionClient } from "@/lib/safe-action";
 import { loginSchema } from "@/schema/user.schema";
 
-
 import { db } from "@/lib/db";
-import { profiles } from "@/lib/db/schema";
 import { signUpSchema } from "@/schema/user.schema";
 
 export const signIn = actionClient
@@ -17,7 +15,6 @@ export const signIn = actionClient
         const { error } = await supabase.auth.signInWithPassword({
             email,
             password,
-
         });
 
         if (error) {
@@ -41,7 +38,6 @@ export const signUp = actionClient
                 data: {
                     name,
                 },
-
             },
         });
 
@@ -50,11 +46,13 @@ export const signUp = actionClient
         }
 
         try {
-            await db.insert(profiles).values({
-                id: authData.user.id,
-                name,
-                classId,
-                role: "STUDENT",
+            await db.profile.create({
+                data: {
+                    id: authData.user.id,
+                    name,
+                    classId,
+                    role: "STUDENT",
+                },
             });
         } catch (error) {
             // If profile creation fails, we might want to cleanup the auth user?

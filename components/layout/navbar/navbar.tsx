@@ -7,7 +7,7 @@ const Navbar = async () => {
     const session = data?.session
 
     return (
-        <header className="border-b-4  fixed top-0 w-full bg-card z-20">
+        <header className="border-b-4 w-full bg-card z-20">
             <div className="container mx-auto flex h-20 items-center justify-between max-w-7xl px-4 md:px-6">
                 <div className="flex items-center gap-2">
                     <span className="text-2xl font-head" >Aspirasi<span className='text-primary'>.in</span></span>
