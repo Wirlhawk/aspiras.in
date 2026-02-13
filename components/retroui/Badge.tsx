@@ -9,6 +9,8 @@ const badgeVariants = cva("font-semibold rounded", {
       outline: "outline-2 outline-foreground text-foreground",
       solid: "bg-foreground text-background",
       surface: "outline-2 bg-primary text-primary-foreground",
+      secondary: "bg-secondary text-secondary-foreground",
+      destructive: "bg-destructive text-destructive-foreground",
     },
     size: {
       sm: "px-2 py-1 text-xs",
@@ -22,9 +24,9 @@ const badgeVariants = cva("font-semibold rounded", {
   },
 });
 
-interface ButtonProps
+interface BadgeProps
   extends HTMLAttributes<HTMLSpanElement>,
-    VariantProps<typeof badgeVariants> {}
+  VariantProps<typeof badgeVariants> { }
 
 export function Badge({
   children,
@@ -32,7 +34,7 @@ export function Badge({
   variant = "default",
   className = "",
   ...props
-}: ButtonProps) {
+}: BadgeProps) {
   return (
     <span
       className={cn(badgeVariants({ variant, size }), className)}

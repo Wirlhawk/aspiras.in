@@ -1,10 +1,9 @@
 import { Button } from '@/components/retroui/Button'
-import { ArrowUpRight, InboxIcon } from 'lucide-react'
-import React from 'react'
-import AspirationCard from './aspiration-card'
-import { Aspiration, AspirationCategory } from '@/lib/generated/prisma/client'
 import { Empty } from '@/components/retroui/Empty'
+import { Aspiration, AspirationCategory } from '@/lib/generated/prisma/client'
+import { ArrowUpRight, InboxIcon } from 'lucide-react'
 import Link from 'next/link'
+import AspirationCard from './aspiration-card'
 
 const AspirationList = ({ aspirations }: { aspirations: (Aspiration & { category: AspirationCategory })[] }) => {
     return (
@@ -21,7 +20,7 @@ const AspirationList = ({ aspirations }: { aspirations: (Aspiration & { category
             {aspirations.length === 0 ? (
                 <EmptyAspiration />
             ) : (
-                <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
+                <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 pl-4'>
                     {aspirations.map((aspiration) => (
                         <AspirationCard
                             key={aspiration.id}

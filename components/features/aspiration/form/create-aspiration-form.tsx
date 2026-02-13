@@ -173,7 +173,7 @@ const CreateAspirationForm = ({ categories }: CreateAspirationFormProps) => {
                             )}
                         </div>
 
-                        <div className="flex items-center gap-3">
+                        {/* <div className="flex items-center gap-3">
                             <Controller
                                 control={form.control}
                                 name="isAnonymous"
@@ -188,7 +188,7 @@ const CreateAspirationForm = ({ categories }: CreateAspirationFormProps) => {
                             <label htmlFor="isAnonymous" className="text-sm font-bold cursor-pointer select-none">
                                 Post anonymously
                             </label>
-                        </div>
+                        </div> */}
                     </div>
 
 

@@ -1,5 +1,5 @@
 
-import { getSessionWithProfile } from '@/server/user/user.query'
+import { getSessionWithProfile } from '@/server/auth/auth.query'
 import { redirect } from 'next/navigation'
 
 export const requireAuth = async () => {

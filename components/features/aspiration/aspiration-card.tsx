@@ -20,23 +20,12 @@ type AspirationCardProps = {
 
 const AspirationCard = ({ id, image, status, createdAt, category, content }: AspirationCardProps) => {
     return (
-        <Link href={`/aspiration/${id}`} className='relative mt-10 w-[350px] block'>
+        <Link href={`/aspiration/${id}`} className='relative mt-10 w-full block'>
             <div className="absolute top-0 left-0 -translate-x-4 -translate-y-1/2 z-10">
                 <Image src="/assets/quote.png" alt="Quote" width={75} height={75} />
             </div>
             <Card className="w-full p-0 cursor-pointer hover:shadow-lg transition-shadow">
-
-                <Card.Content className="pb-0 pt-10 px-0 ">
-                    {/* {image && (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                            src={image}
-                            className="w-full h-48 object-cover border-y-2"
-                            alt="Aspiration"
-                        />
-                    )} */}
-                </Card.Content>
-                <Card.Header className="pb-0">
+                <Card.Header className="pb-0 pt-10">
                     <Card.Title className='font-sans font-normal text-xl truncate'>{content}</Card.Title>
                 </Card.Header>
                 <Card.Content className="flex justify-between items-center">

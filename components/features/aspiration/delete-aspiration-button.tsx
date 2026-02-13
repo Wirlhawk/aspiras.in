@@ -36,7 +36,7 @@ const DeleteAspirationButton = ({ id }: DeleteAspirationButtonProps) => {
                 </Button>
             </Dialog.Trigger>
             <Dialog.Content size="sm" >
-                <Dialog.Header  variant={"secondary"}>Delete Aspiration</Dialog.Header>
+                <Dialog.Header>Delete Aspiration</Dialog.Header>
                 <div className="p-6 space-y-2">
                     <p className="font-semibold text-lg">Are you sure?</p>
                     <Dialog.Description className="text-sm text-muted-foreground">

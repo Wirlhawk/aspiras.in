@@ -32,7 +32,7 @@ const overlayVariants = cva(
 
 interface IDialogBackgroupProps
   extends HTMLAttributes<HTMLDivElement>,
-  VariantProps<typeof overlayVariants> { }
+    VariantProps<typeof overlayVariants> {}
 
 const DialogBackdrop = React.forwardRef<HTMLDivElement, IDialogBackgroupProps>(
   function DialogBackdrop(inputProps: IDialogBackgroupProps, forwardedRef) {
@@ -79,7 +79,7 @@ const dialogVariants = cva(
 
 interface IDialogContentProps
   extends HTMLAttributes<HTMLDivElement>,
-  VariantProps<typeof dialogVariants> {
+    VariantProps<typeof dialogVariants> {
   overlay?: IDialogBackgroupProps;
 }
 
@@ -112,7 +112,7 @@ const DialogContent = React.forwardRef<HTMLDivElement, IDialogContentProps>(
 );
 DialogContent.displayName = "DialogContent";
 
-interface IDialogDescriptionProps extends HTMLAttributes<HTMLDivElement> { }
+interface IDialogDescriptionProps extends HTMLAttributes<HTMLDivElement> {}
 const DialogDescription = ({
   children,
   className,
@@ -145,7 +145,7 @@ const dialogFooterVariants = cva(
 
 export interface IDialogFooterProps
   extends HTMLAttributes<HTMLDivElement>,
-  VariantProps<typeof dialogFooterVariants> { }
+    VariantProps<typeof dialogFooterVariants> {}
 
 const DialogFooter = ({
   children,
@@ -165,12 +165,11 @@ const DialogFooter = ({
 };
 
 const dialogHeaderVariants = cva(
-  "flex items-center justify-between border-b-2 px-4 min-h-12 font-sans",
+  "flex items-center justify-between border-b-2 px-4 min-h-12",
   {
     variants: {
       variant: {
         default: "bg-primary text-primary-foreground",
-        secondary: "bg-secondary text-secondary-foreground",
       },
       position: {
         fixed: "sticky top-0",
@@ -197,8 +196,8 @@ const DialogHeaderDefaultLayout = ({ children }: { children: ReactNode }) => {
 
 interface IDialogHeaderProps
   extends HTMLAttributes<HTMLDivElement>,
-  VariantProps<typeof dialogHeaderVariants>,
-  ReactDialog.DialogTitleProps { }
+    VariantProps<typeof dialogHeaderVariants>,
+    ReactDialog.DialogTitleProps {}
 
 const DialogHeader = ({
   children,

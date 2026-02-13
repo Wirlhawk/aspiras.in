@@ -1,5 +1,5 @@
 import { Button } from '@/components/retroui/Button'
-import { getSessionWithProfile } from '@/server/user/user.query'
+import { getSessionWithProfile } from '@/server/auth/auth.query'
 import Link from 'next/link'
 
 const Navbar = async () => {

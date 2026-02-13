@@ -42,8 +42,6 @@ model Profile {
   class              SchoolClass         @relation(fields: [classId], references: [id])
   aspirations        Aspiration[]
   aspirationComments AspirationComment[]
-  adminResponses     AdminResponse[]
-  aspirationReports  AspirationReport[]
 
   @@map("profiles")
 }
@@ -74,6 +72,7 @@ model Aspiration {
   id          String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   content     String
   image       String?
+  isSpam      Boolean          @default(false) @map("is_spam")
   categoryId  String           @map("category_id") @db.Uuid
   profileId   String           @map("profile_id") @db.Uuid
   status      AspirationStatus @default(PENDING)
@@ -82,29 +81,13 @@ model Aspiration {
   updatedAt   DateTime?        @default(now()) @map("updated_at")
 
   // Relations
-  category  AspirationCategory  @relation(fields: [categoryId], references: [id])
-  profile   Profile             @relation(fields: [profileId], references: [id])
-  comments  AspirationComment[]
-  responses AdminResponse[]
-  reports   AspirationReport[]
-  flags     AspirationFlag[]
+  category AspirationCategory  @relation(fields: [categoryId], references: [id])
+  profile  Profile             @relation(fields: [profileId], references: [id])
+  comments AspirationComment[]
+  flags    AspirationFlag[]
 
   @@map("aspirations")
 }
-
-// model AspirationLike {
-//   id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-//   profileId    String    @map("profile_id") @db.Uuid
-//   aspirationId String    @map("aspiration_id") @db.Uuid
-//   createdAt    DateTime? @default(now()) @map("created_at")
-
-//   // Relations
-//   profile    Profile    @relation(fields: [profileId], references: [id])
-//   aspiration Aspiration @relation(fields: [aspirationId], references: [id])
-
-//   @@unique([profileId, aspirationId], name: "aspiration_like_unique")
-//   @@map("aspiration_likes")
-// }
 
 model AspirationComment {
   id              String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
@@ -122,35 +105,6 @@ model AspirationComment {
   replies       AspirationComment[] @relation("CommentReplies")
 
   @@map("aspiration_comments")
-}
-
-model AdminResponse {
-  id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  content      String
-  aspirationId String    @map("aspiration_id") @db.Uuid
-  profileId    String    @map("profile_id") @db.Uuid
-  isPinned     Boolean?  @default(false) @map("is_pinned")
-  createdAt    DateTime? @default(now()) @map("created_at")
-
-  // Relations
-  aspiration Aspiration @relation(fields: [aspirationId], references: [id])
-  profile    Profile    @relation(fields: [profileId], references: [id])
-
-  @@map("admin_responses")
-}
-
-model AspirationReport {
-  id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  reason       String
-  aspirationId String    @map("aspiration_id") @db.Uuid
-  profileId    String    @map("profile_id") @db.Uuid
-  createdAt    DateTime? @default(now()) @map("created_at")
-
-  // Relations
-  aspiration Aspiration @relation(fields: [aspirationId], references: [id])
-  profile    Profile    @relation(fields: [profileId], references: [id])
-
-  @@map("aspiration_reports")
 }
 
 model AspirationFlag {

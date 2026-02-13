@@ -25,7 +25,7 @@ export async function getSessionWithProfile() {
 
     if (sessionError) {
         console.error("getSession error:", sessionError.message)
-        return null
+        return null                                         
     }
 
     const user = session?.user

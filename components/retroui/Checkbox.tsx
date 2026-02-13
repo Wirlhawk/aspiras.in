@@ -1,54 +1,50 @@
-"use client";
-
 import { cn } from "@/lib/utils";
-import React from "react";
+import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
+import { cva, VariantProps } from "class-variance-authority";
+import { Check } from "lucide-react";
 
-interface CheckboxProps {
-    checked?: boolean;
-    onCheckedChange?: (checked: boolean) => void;
-    id?: string;
-    className?: string;
-    disabled?: boolean;
-}
+const checkboxVariants = cva("border-2 rounded", {
+  variants: {
+    variant: {
+      default: "data-[state=checked]:bg-primary data-[state=checked]:text-primary-foreground ",
+      outline: "",
+      solid:
+        "data-[state=checked]:bg-foreground data-[state=checked]:text-background",
+    },
+    size: {
+      sm: "h-4 w-4",
+      md: "h-5 w-5",
+      lg: "h-6 w-6",
+    },
+  },
+  defaultVariants: {
+    variant: "default",
+    size: "md",
+  },
+});
+
+interface CheckboxProps
+  extends React.ComponentProps<typeof CheckboxPrimitive.Root>,
+    VariantProps<typeof checkboxVariants> {}
 
 export const Checkbox = ({
-    checked = false,
-    onCheckedChange,
-    id,
-    className,
-    disabled = false,
-}: CheckboxProps) => {
-    return (
-        <button
-            type="button"
-            role="checkbox"
-            aria-checked={checked}
-            id={id}
-            disabled={disabled}
-            onClick={() => onCheckedChange?.(!checked)}
-            className={cn(
-                "h-5 w-5 shrink-0 rounded border-2 shadow-md transition focus:outline-hidden focus:shadow-xs flex items-center justify-center",
-                checked
-                    ? "bg-primary border-primary text-primary-foreground"
-                    : "bg-transparent border-border",
-                disabled && "cursor-not-allowed opacity-50",
-                className
-            )}
-        >
-            {checked && (
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth={3}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="h-3.5 w-3.5"
-                >
-                    <polyline points="20 6 9 17 4 12" />
-                </svg>
-            )}
-        </button>
-    );
-};
+  className,
+  size,
+  variant,
+  ...props
+}: CheckboxProps) => (
+  <CheckboxPrimitive.Root
+    className={cn(
+      checkboxVariants({
+        size,
+        variant,
+      }),
+      className,
+    )}
+    {...props}
+  >
+    <CheckboxPrimitive.Indicator className="h-full w-full">
+      <Check className="h-full w-full" />
+    </CheckboxPrimitive.Indicator>
+  </CheckboxPrimitive.Root>
+);

@@ -3,22 +3,16 @@
 import { Button } from '@/components/retroui/Button'
 import { Input } from '@/components/retroui/Input'
 import { useSafeAction } from '@/hooks/use-safe-action'
-import { signIn } from '@/server/user/user.action'
+import { signIn } from '@/server/auth/auth.action'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-
-// Schema for login - matching the server action schema appropriately
-// Note: We can also export schema from action file if needed to stay in sync
-const loginSchema = z.object({
-    email: z.string().email({ message: "Invalid email address" }),
-    password: z.string().min(6, { message: "Password must be at least 6 characters" }),
-})
+import { LoginSchema, type LoginInput } from "@/schema/auth.schema"
 
 const LoginForm = () => {
 
-    const form = useForm<z.infer<typeof loginSchema>>({
-        resolver: zodResolver(loginSchema),
+    const form = useForm<LoginInput>({
+        resolver: zodResolver(LoginSchema),
         defaultValues: {
             email: "",
             password: "",
@@ -29,7 +23,7 @@ const LoginForm = () => {
         successMessage: "Logged in successfully!",
     })
 
-    const onSubmit = (values: z.infer<typeof loginSchema>) => {
+    const onSubmit = (values: LoginInput) => {
         executeLogin(values)
     }
 

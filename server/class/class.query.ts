@@ -1,5 +1,10 @@
-import { db } from "@/lib/db";
+import { db } from "@/lib/db"
 
-export async function getAllClasses() {
-    return await db.schoolClass.findMany();
+export const getAllClasses = async () => {
+    return await db.schoolClass.findMany({
+        orderBy: [{ grade: 'asc' }, { name: 'asc' }],
+        include: {
+            _count: { select: { profiles: true } },
+        },
+    })
 }

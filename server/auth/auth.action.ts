@@ -2,13 +2,11 @@
 
 import { createServerClient } from "@/lib/supabase/server";
 import { actionClient } from "@/lib/safe-action";
-import { loginSchema } from "@/schema/user.schema";
-
+import { LoginSchema, SignUpSchema } from "@/schema/auth.schema";
 import { db } from "@/lib/db";
-import { signUpSchema } from "@/schema/user.schema";
 
 export const signIn = actionClient
-    .schema(loginSchema)
+    .schema(LoginSchema)
     .action(async ({ parsedInput: { email, password } }) => {
         const supabase = await createServerClient();
 
@@ -27,7 +25,7 @@ export const signIn = actionClient
     });
 
 export const signUp = actionClient
-    .schema(signUpSchema)
+    .schema(SignUpSchema)
     .action(async ({ parsedInput: { email, password, name, classId } }) => {
         const supabase = await createServerClient();
 
@@ -55,9 +53,9 @@ export const signUp = actionClient
                 },
             });
         } catch (error) {
-            // If profile creation fails, we might want to cleanup the auth user?
-            // For now, just throwing error.
             console.error("Profile creation failed:", error);
+            // Optional: delete auth user if profile creation fails?
+            // For public signup, we might rely on RLS or separate cleanup.
             throw new Error("Failed to create profile");
         }
 

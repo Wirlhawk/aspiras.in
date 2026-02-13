@@ -1,21 +1,21 @@
 "use client"
 
-import { signUp } from "@/server/user/user.action"
+import { signUp } from "@/server/auth/auth.action"
 import { Button } from "@/components/retroui/Button"
 import { Input } from "@/components/retroui/Input"
 import { useSafeAction } from "@/hooks/use-safe-action"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import { signUpSchema } from "@/schema/user.schema"
+import { SignUpSchema } from "@/schema/auth.schema"
 import { Select } from "@/components/retroui/Select"
 
 
 import type { SchoolClass } from "@/lib/generated/prisma/client"
 
 export function SignUpForm({ classes }: { classes: SchoolClass[] }) {
-    const form = useForm<z.infer<typeof signUpSchema>>({
-        resolver: zodResolver(signUpSchema),
+    const form = useForm<z.infer<typeof SignUpSchema>>({
+        resolver: zodResolver(SignUpSchema),
         defaultValues: {
             name: "",
             email: "",
@@ -28,7 +28,7 @@ export function SignUpForm({ classes }: { classes: SchoolClass[] }) {
         successMessage: "Signed up successfully!",
     })
 
-    function onSubmit(values: z.infer<typeof signUpSchema>) {
+    function onSubmit(values: z.infer<typeof SignUpSchema>) {
         executeSignUp(values)
     }
 
