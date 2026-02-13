@@ -11,6 +11,7 @@ import { SignUpSchema } from "@/schema/auth.schema"
 import { Select } from "@/components/retroui/Select"
 
 
+import { useRouter } from "next/navigation"
 import type { SchoolClass } from "@/lib/generated/prisma/client"
 
 export function SignUpForm({ classes }: { classes: SchoolClass[] }) {
@@ -24,8 +25,13 @@ export function SignUpForm({ classes }: { classes: SchoolClass[] }) {
         },
     })
 
+    const router = useRouter()
+
     const { run: executeSignUp, loading } = useSafeAction(signUp, {
         successMessage: "Signed up successfully!",
+        onSuccess: () => {
+            router.push("/")
+        }
     })
 
     function onSubmit(values: z.infer<typeof SignUpSchema>) {

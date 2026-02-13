@@ -7,6 +7,8 @@ import { signIn } from '@/server/auth/auth.action'
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
+import { Select } from "@/components/retroui/Select"
+import { useRouter } from "next/navigation"
 import { LoginSchema, type LoginInput } from "@/schema/auth.schema"
 
 const LoginForm = () => {
@@ -19,8 +21,13 @@ const LoginForm = () => {
         },
     })
 
+    const router = useRouter()
+
     const { run: executeLogin, loading } = useSafeAction(signIn, {
         successMessage: "Logged in successfully!",
+        onSuccess: () => {
+            router.push("/")
+        }
     })
 
     const onSubmit = (values: LoginInput) => {

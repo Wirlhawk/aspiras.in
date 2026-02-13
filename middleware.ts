@@ -3,7 +3,8 @@ import { updateSession } from "@/lib/supabase/middleware"
 
 export async function middleware(request: NextRequest) {
     // 1. Update session (refresh cookies) and get user
-    const { response, user } = await updateSession(request)
+    // @ts-ignore
+    const { response, user, supabase } = await updateSession(request)
 
     // 2. Protected routes pattern
     if (request.nextUrl.pathname.startsWith("/dashboard")) {
@@ -12,13 +13,26 @@ export async function middleware(request: NextRequest) {
             url.pathname = "/login"
             return NextResponse.redirect(url)
         }
+
+        // Check for admin role
+        const { data: profile } = await supabase
+            .from("profiles")
+            .select("role")
+            .eq("id", user.id)
+            .single()
+
+        if (!profile || profile.role !== "ADMIN") {
+            const url = request.nextUrl.clone()
+            url.pathname = "/"
+            return NextResponse.redirect(url)
+        }
     }
 
     // Redirect logged-in users away from auth pages
     if (request.nextUrl.pathname.startsWith("/login") || request.nextUrl.pathname.startsWith("/register")) {
         if (user) {
             const url = request.nextUrl.clone()
-            url.pathname = "/dashboard"
+            url.pathname = "/"
             return NextResponse.redirect(url)
         }
     }
